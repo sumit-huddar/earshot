@@ -6,8 +6,7 @@ Earshot captures the audio from any browser tab — a meeting, lecture, podcast,
 
 > No bot to install in your meeting, no Google login, no screen-recording software. Just share a tab's audio and Earshot does the rest.
 
-<!-- Add a short screen recording here — it's the single most valuable thing for visitors. -->
-<!-- ![Earshot demo](docs/demo.gif) -->
+![Earshot home screen](docs/home.png)
 
 ---
 
@@ -18,6 +17,18 @@ Earshot captures the audio from any browser tab — a meeting, lecture, podcast,
 - 🧠 **Mode-aware summaries** — pick *Meeting*, *Lecture*, *Podcast*, or *Interview* and the summary structure adapts (decisions & action items vs. study notes vs. takeaways, etc.).
 - 🔎 **Ask your history (RAG)** — every session is embedded with an **on-device** model and stored. Ask a question and Earshot retrieves the most relevant sessions and synthesizes a cited answer.
 - 💾 **Zero-config storage** — saves to MongoDB if configured, otherwise to a local JSON file. Nothing else to set up.
+
+---
+
+## Screenshots
+
+**Ask your history** — semantic search retrieves the most relevant sessions and answers with citations.
+
+![Ask AI view](docs/ask.png)
+
+**Library** — every captured session, tagged by type and saved for later.
+
+![Library view](docs/library.png)
 
 ---
 
