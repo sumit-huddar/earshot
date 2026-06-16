@@ -1,3 +1,5 @@
 .env
 node_modules/
 *.webm
+.DS_Store
+backend/summaries.json
