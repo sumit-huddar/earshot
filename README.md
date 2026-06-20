@@ -12,11 +12,11 @@ Earshot captures the audio from any browser tab — a meeting, lecture, podcast,
 
 ## Features
 
-- 🎧 **Capture any tab's audio** — works with Google Meet, Zoom (web), YouTube, or anything that plays sound, via the browser's `getDisplayMedia` API.
-- ⚡ **Live transcription** — audio is streamed in 15-second slices to [Groq Whisper](https://groq.com) and captions appear in near real time.
-- 🧠 **Mode-aware summaries** — pick *Meeting*, *Lecture*, *Podcast*, or *Interview* and the summary structure adapts (decisions & action items vs. study notes vs. takeaways, etc.).
-- 🔎 **Ask your history (RAG)** — every session is embedded with an **on-device** model and stored. Ask a question and Earshot retrieves the most relevant sessions and synthesizes a cited answer.
-- 💾 **Zero-config storage** — saves to MongoDB if configured, otherwise to a local JSON file. Nothing else to set up.
+- **Capture any tab's audio** — works with Google Meet, Zoom (web), YouTube, or anything that plays sound, via the browser's `getDisplayMedia` API.
+- **Live transcription** — audio is streamed in 15-second slices to [Groq Whisper](https://groq.com) and captions appear in near real time.
+- **Mode-aware summaries** — pick *Meeting*, *Lecture*, *Podcast*, or *Interview* and the summary structure adapts (decisions & action items vs. study notes vs. takeaways, etc.).
+- **Ask your history (RAG)** — every session is embedded with an **on-device** model and stored. Ask a question and Earshot retrieves the most relevant sessions and synthesizes a cited answer.
+- **Zero-config storage** — saves to MongoDB if configured, otherwise to a local JSON file. Nothing else to set up.
 
 ---
 
