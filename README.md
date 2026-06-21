@@ -1,156 +1,138 @@
-# Earshot
+# Earshot — NLP for Spoken-Audio Transcripts
 
-**Your second brain for anything you hear.**
+**An NLP pipeline for semantic search, retrieval-augmented Q&A, and summarization over
+meeting, lecture, podcast, and interview transcripts.**
 
-Earshot captures the audio from any browser tab — a meeting, lecture, podcast, or interview — transcribes it live, writes a structured AI summary, and makes every session **semantically searchable forever**. Ask it questions in plain English and it answers from your entire history, with citations.
+Earshot turns spoken audio into a searchable knowledge base. This repo's core is a Python/NLP
+pipeline that embeds transcripts, retrieves the most relevant sessions by **cosine similarity**, and
+answers natural-language questions over your history (RAG). A TF-IDF baseline is benchmarked against
+dense sentence embeddings, with extractive summarization and keyphrase extraction on top.
 
-> No bot to install in your meeting, no Google login, no screen-recording software. Just share a tab's audio and Earshot does the rest.
-
-![Earshot home screen](docs/home.png)
-
----
-
-## Features
-
-- 🎧 **Capture any tab's audio** — works with Google Meet, Zoom (web), YouTube, or anything that plays sound, via the browser's `getDisplayMedia` API.
-- ⚡ **Live transcription** — audio is streamed in 15-second slices to [Groq Whisper](https://groq.com) and captions appear in near real time.
-- 🧠 **Mode-aware summaries** — pick *Meeting*, *Lecture*, *Podcast*, or *Interview* and the summary structure adapts (decisions & action items vs. study notes vs. takeaways, etc.).
-- 🔎 **Ask your history (RAG)** — every session is embedded with an **on-device** model and stored. Ask a question and Earshot retrieves the most relevant sessions and synthesizes a cited answer.
-- 💾 **Zero-config storage** — saves to MongoDB if configured, otherwise to a local JSON file. Nothing else to set up.
+> 📓 **Start here:** [`notebooks/nlp_pipeline.ipynb`](notebooks/nlp_pipeline.ipynb) — the full
+> pipeline end-to-end, with rendered plots, an evaluation table, and a RAG walkthrough.
 
 ---
 
-## Screenshots
+## The NLP pipeline
 
-**Ask your history** — semantic search retrieves the most relevant sessions and answers with citations.
+```
+transcript ──► preprocess ──►  vectorize  ──► cosine-similarity ──► rank ──► summarize / answer
+              (clean,          ├─ TF-IDF        retrieval
+               tokenize,       │  (sparse baseline)
+               lemmatize)      └─ MiniLM embeddings
+                                  (dense, 384-d)
+```
+
+| Stage | Technique | Module |
+|---|---|---|
+| Preprocessing | tokenization, stopword removal, lemmatization (NLTK) | [`nlp/preprocess.py`](nlp/preprocess.py) |
+| Sparse retrieval | TF-IDF (unigrams + bigrams), scikit-learn | [`nlp/vectorizers.py`](nlp/vectorizers.py) |
+| Dense retrieval | `all-MiniLM-L6-v2` sentence embeddings | [`nlp/embeddings.py`](nlp/embeddings.py) |
+| Ranking / search | cosine similarity, unified `search(query, k)` | [`nlp/search.py`](nlp/search.py) |
+| Summarization | embedding-based **TextRank** (graph centrality) | [`nlp/summarize.py`](nlp/summarize.py) |
+| Keyphrases | per-session TF-IDF keyterms | [`nlp/keywords.py`](nlp/keywords.py) |
+| Evaluation | Hit@1 · Precision@k · MRR | [`nlp/evaluate.py`](nlp/evaluate.py) |
+| RAG chunking | overlapping passage windows | [`nlp/data.py`](nlp/data.py) |
+
+---
+
+## What the notebook shows
+
+1. **Corpus EDA** — mode distribution, transcript lengths, word cloud.
+2. **Preprocessing** — raw text → cleaned, lemmatized tokens.
+3. **TF-IDF baseline** — sparse vectors + interpretable top terms.
+4. **Dense embeddings** — 384-dim MiniLM vectors.
+5. **TF-IDF vs. embeddings** — semantic search demos on paraphrased queries.
+6. **Evaluation** — Hit@1 / P@k / MRR comparison on a hand-labeled query set.
+7. **Embedding-space viz** — PCA & t-SNE projections clustering by topic/mode.
+8. **Extractive summarization** — TextRank over sentence embeddings.
+9. **Keyphrase extraction** — auto-tagging each session.
+10. **RAG walkthrough** — retrieve passages and assemble the context fed to the LLM.
+
+**Key finding:** dense embeddings retrieve correctly even when the query shares *no exact words* with
+the transcript (vocabulary mismatch), where the TF-IDF baseline degrades — the motivation for using
+sentence embeddings in the live app.
+
+---
+
+## Run it
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# build (if needed) and execute the notebook
+jupyter nbconvert --to notebook --execute --inplace notebooks/nlp_pipeline.ipynb
+# ...or just open it:
+jupyter lab notebooks/nlp_pipeline.ipynb
+```
+
+First run downloads the `all-MiniLM-L6-v2` model (~90 MB) and a few NLTK data files.
+
+### Use the package directly
+
+```python
+from nlp import data, search, evaluate
+
+df = data.load_sessions()
+index = search.SemanticIndex(
+    df["document"].tolist(),
+    df[["sessionId", "title", "mode"]].to_dict("records"),
+    method="dense",          # or "tfidf"
+)
+for r in index.search("how do neural networks learn?", k=3):
+    print(r.score, r.meta["title"])
+
+metrics, by_query = evaluate.evaluate_index(index, k=3)
+print(metrics)               # {'hit@1': ..., 'P@3': ..., 'MRR': ...}
+```
+
+---
+
+## Dataset
+
+[`data/sessions.json`](data/sessions.json) — 11 sessions across all four modes (lecture, meeting,
+podcast, interview). Each has a transcript and a structured summary, tagged `captured` (real
+recordings made with the demo app) or `sample` (added so the corpus spans every mode).
+
+---
+
+## Project layout
+
+```
+data/        sessions.json — the transcript corpus
+nlp/         the NLP package (preprocess, vectorizers, embeddings, search, summarize, keywords, evaluate)
+notebooks/   nlp_pipeline.ipynb — the end-to-end notebook
+app/         interactive demo: React frontend + Express backend (see below)
+```
+
+---
+
+## Interactive demo app
+
+The pipeline also ships as a working web app under [`app/`](app/): it captures any browser tab's
+audio (Meet, Zoom, YouTube…), transcribes it live with Whisper, writes a mode-aware summary, embeds
+each session **on-device**, and lets you ask questions across your history with cited answers.
 
 ![Ask AI view](docs/ask.png)
 
-**Library** — every captured session, tagged by type and saved for later.
+```bash
+# backend  (needs a free GROQ_API_KEY for Whisper transcription + LLaMA summaries)
+cd app/backend && npm install && cp .env.example .env && npm run dev
 
-![Library view](docs/library.png)
-
----
-
-## How it works
-
+# frontend
+cd app/frontend && npm install && npm run dev
 ```
-                         ┌──────────────────────────────────────────────┐
-   Browser tab audio     │                  Frontend (React)            │
-   (Meet / Zoom / etc.)  │   getDisplayMedia → record 15s webm chunks   │
-            │            └───────────────┬──────────────────────────────┘
-            ▼                            │  POST /audio (chunk)
-   ┌─────────────────┐                   ▼
-   │ MediaRecorder   │        ┌──────────────────────────────────────────┐
-   │ 15s webm/opus   │        │              Backend (Express)           │
-   └─────────────────┘        │                                          │
-                              │  Groq Whisper  ──►  live transcript      │
-            Stop ───────────► │  Groq LLaMA 3.3 ─►  mode-aware summary   │
-                              │  all-MiniLM-L6-v2 ► 384-dim embedding    │
-                              │            │                             │
-                              │            ▼   stored (Mongo / JSON)     │
-                              │  /search:  embed query → cosine rank →   │
-                              │            LLaMA answer w/ citations     │
-                              └──────────────────────────────────────────┘
-```
-
-**The pipeline, end to end:** browser tab audio → MediaRecorder chunks → Whisper transcription → LLaMA summarization → local embedding → in-memory vector search → retrieval-augmented Q&A.
-
----
-
-## Tech stack
 
 | Layer | Tech |
 |---|---|
-| Frontend | React 19, Vite, `react-markdown`, `lucide-react` |
-| Backend | Node.js, Express 5, Multer |
+| Frontend | React 19, Vite |
+| Backend | Node.js, Express 5 |
 | Transcription | Groq Whisper (`whisper-large-v3-turbo`) |
-| Summarization & RAG answers | Groq LLaMA 3.3 70B |
-| Embeddings | `all-MiniLM-L6-v2` via [transformers.js](https://github.com/xenova/transformers.js) — runs **locally**, no API key |
-| Vector search | In-memory cosine similarity |
-| Storage | MongoDB (optional) with automatic local-JSON fallback |
+| Summaries & RAG answers | Groq LLaMA 3.3 70B |
+| Embeddings | `all-MiniLM-L6-v2` via transformers.js — runs **locally**, no API key |
 
-A note on the embeddings: they run entirely **on-device** with a small (~25 MB) model that's downloaded and cached on first use. There's no external embedding API, no key, and no per-request cost — making semantic search free and private.
-
----
-
-## Getting started
-
-### Prerequisites
-
-- **Node.js 18+**
-- A **free [Groq API key](https://console.groq.com)** (used for both transcription and summarization)
-- A **Chromium-based browser** (Chrome or Edge) — these reliably support sharing *tab audio*, which is the one thing Earshot needs.
-
-### 1. Backend
-
-```bash
-cd backend
-npm install
-cp .env.example .env        # then add your GROQ_API_KEY
-npm run dev                 # starts on http://localhost:3001
-```
-
-`MONGODB_URI` is optional — leave it blank and summaries save to `backend/summaries.json`.
-
-### 2. Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev                 # starts on http://localhost:5173
-```
-
-### 3. Use it
-
-1. Join your meeting (or open any tab that plays audio) in a separate tab.
-2. In Earshot, pick a **mode**, give it a **title**, and click **Start Capture**.
-3. In the browser's picker, choose that tab **and tick "Share tab audio"** (required).
-4. Watch captions stream in. Click **Stop & Summarize** when you're done.
-5. Later, open the **Ask AI** tab and ask questions across everything you've captured.
-
----
-
-## Project structure
-
-```
-backend/
-  index.js                 Express API (sessions, audio, stop, search)
-  services/
-    transcriber.js         Groq Whisper transcription
-    summarizer.js          Mode-aware summaries + RAG answer synthesis
-    embeddings.js          On-device embeddings + cosine search
-    storage.js             MongoDB with local-JSON fallback
-frontend/
-  src/
-    App.jsx                Single-page UI (capture, transcript, summaries, Ask AI)
-    api.js                 API client
-```
-
----
-
-## Configuration
-
-| Variable | Where | Required | Purpose |
-|---|---|---|---|
-| `GROQ_API_KEY` | backend | ✅ | Whisper transcription + LLaMA summaries/answers |
-| `MONGODB_URI` | backend | — | Persistent storage (falls back to local JSON) |
-| `PORT` | backend | — | Backend port (default `3001`) |
-| `VITE_API_URL` | frontend | — | Backend URL (default `http://localhost:3001`) |
-
-Secrets live in `.env` files, which are git-ignored. Never commit real keys — use the provided `.env.example` templates.
-
----
-
-## Notes & limitations
-
-- **Tab audio capture** is best supported in Chrome/Edge on desktop; Safari and Firefox have limited support.
-- Transcription quality depends on the audio; Whisper occasionally mishears proper nouns — the summarizer is prompted to infer intent.
-- Chunked transcription (15s windows) can split a sentence across captions; this is a deliberate latency trade-off for live feedback.
-
-## Possible future work
-
-- Speaker diarization (who said what)
-- Auto chapters and timestamps
-- Export to Notion / PDF
-- Swap in a dedicated vector database as history grows
+The app's retrieval (`app/backend/services/embeddings.js`) and the Python `nlp` package use the same
+model and the same cosine-similarity ranking — the notebook is the analysis-grade version of what the
+app does at runtime.

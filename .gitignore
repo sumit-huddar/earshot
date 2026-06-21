@@ -1,5 +1,15 @@
+# Secrets & OS
 .env
-node_modules/
-*.webm
 .DS_Store
-backend/summaries.json
+*.webm
+
+# Node (demo app)
+node_modules/
+app/backend/summaries.json
+
+# Python / NLP
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.cache/

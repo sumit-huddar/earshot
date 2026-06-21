@@ -1,0 +1,12 @@
+# NLP pipeline dependencies (Python 3.9+)
+sentence-transformers>=2.2,<3.1   # dense embeddings (all-MiniLM-L6-v2); pulls in torch + transformers
+scikit-learn>=1.3                 # TF-IDF vectorizer, cosine similarity, PCA/t-SNE
+nltk>=3.8                         # tokenization, stopwords, lemmatization
+networkx>=3.1                    # graph centrality for TextRank summarization
+pandas>=2.0
+numpy>=1.24,<2.1
+matplotlib>=3.7                  # plots
+seaborn>=0.12                    # nicer statistical plots
+wordcloud>=1.9                   # corpus word cloud
+jupyter>=1.0                     # notebook runtime
+ipykernel>=6.25                  # kernel for executing the notebook

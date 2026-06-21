@@ -1,0 +1,112 @@
+[
+  {
+    "sessionId": "real-stacks",
+    "title": "Stacks and Queues",
+    "mode": "lecture",
+    "source": "captured",
+    "transcript": "Hey, welcome back to the channel. I hope you guys are doing extremely well. This will be an introductory video about stacks and queues. I'll be covering what is a stack, what is a queue, and then implementing stack and queue using arrays and using linked lists. A stack is a linear data structure that follows the last in first out principle, also called LIFO. The two main operations are push, which adds an element to the top, and pop, which removes the element from the top. A queue follows first in first out, or FIFO, where you enqueue at the rear and dequeue from the front. After that I'll be implementing a stack using two queues, which is a very common interview question. Make sure you understand the time complexity: push and pop are constant time O of one for a stack.",
+    "summary": "### Topic Overview\nAn introductory lecture on stacks and queues, two fundamental linear data structures, covering their definitions, core operations, and array- and linked-list-based implementations.\n\n### Key Concepts\n* **Stack** — a LIFO (last in, first out) structure with push and pop operations, both O(1).\n* **Queue** — a FIFO (first in, first out) structure with enqueue (rear) and dequeue (front).\n* **Stack via two queues** — a classic interview construction.\n\n### Things to Review\n* Time complexity of push/pop and enqueue/dequeue.\n* Array vs linked-list trade-offs for each structure.",
+    "wordCount": 150,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "real-neural-nets",
+    "title": "Intro to Neural Networks",
+    "mode": "lecture",
+    "source": "captured",
+    "transcript": "Today we begin with neural networks. A neural network is a function approximator built from layers of neurons. Each neuron computes a weighted sum of its inputs, adds a bias, and passes the result through a non-linear activation function such as ReLU or sigmoid. Training works by defining a loss function and using backpropagation with gradient descent to update the weights. We'll talk about forward passes, computing the loss, and then the backward pass that propagates gradients. The key intuition is that stacking non-linear layers lets the network learn hierarchical features from raw data.",
+    "summary": "### Topic Overview\nA first lecture on neural networks, introducing neurons, activation functions, and how networks are trained with backpropagation and gradient descent.\n\n### Key Concepts\n* **Neuron** — computes a weighted sum plus bias, then a non-linear activation (ReLU, sigmoid).\n* **Forward pass** — input flows through layers to produce a prediction and a loss.\n* **Backpropagation** — propagates gradients backward to update weights via gradient descent.\n\n### Things to Review\n* Why non-linear activations enable hierarchical feature learning.\n* The role of the loss function in training.",
+    "wordCount": 95,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "real-q3-roadmap",
+    "title": "Q3 Roadmap Sync",
+    "mode": "meeting",
+    "source": "captured",
+    "transcript": "Okay let's get started with the Q3 roadmap sync. The main priority this quarter is shipping the new onboarding flow. Priya will own the design and Marcus is on backend. We agreed to push the analytics dashboard to Q4 since it depends on the data pipeline migration. Action item for Sam is to scope the migration by next Friday. We also decided to freeze new feature requests two weeks before the release to stabilize. Next steps: Priya shares mockups Monday, Marcus drafts the API contract.",
+    "summary": "### Overview\nThe team aligned on Q3 priorities, ownership, and a release-stabilization plan.\n\n### Key Discussion Points\n* New onboarding flow is the top Q3 priority.\n* Analytics dashboard deferred to Q4 (blocked on data-pipeline migration).\n\n### Decisions Made\n* Push the analytics dashboard to Q4.\n* Freeze new feature requests two weeks before release.\n\n### Action Items\n* Sam — scope the data-pipeline migration by next Friday.\n* Priya — share onboarding mockups Monday; owns design.\n* Marcus — draft the API contract; owns backend.\n\n### Next Steps\n* Reconvene after mockups and API contract are ready.",
+    "wordCount": 80,
+    "durationMin": 1
+  },
+  {
+    "sessionId": "sample-design-review",
+    "title": "Checkout Redesign — Design Review",
+    "mode": "meeting",
+    "source": "sample",
+    "transcript": "Thanks everyone for joining the design review for the checkout redesign. The goal is to reduce cart abandonment, which is sitting at around sixty eight percent. Dana walked us through the new single-page checkout with an express path for returning customers. There was a concern from engineering that the address autocomplete adds a third party dependency. We agreed to prototype both with and without autocomplete and measure latency. Decision: we ship the single-page layout but gate autocomplete behind a feature flag. Action item: Dana finalizes the high fidelity mockups, and Raj benchmarks the autocomplete provider by Wednesday.",
+    "summary": "### Overview\nA design review of the new single-page checkout aimed at reducing a 68% cart-abandonment rate.\n\n### Key Discussion Points\n* Single-page checkout with an express path for returning customers.\n* Engineering concern about a third-party address-autocomplete dependency.\n\n### Decisions Made\n* Ship the single-page layout.\n* Gate address autocomplete behind a feature flag pending benchmarks.\n\n### Action Items\n* Dana — finalize high-fidelity mockups.\n* Raj — benchmark the autocomplete provider by Wednesday.\n\n### Next Steps\n* Compare checkout latency with and without autocomplete before rollout.",
+    "wordCount": 96,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-sprint-retro",
+    "title": "Sprint 24 Retrospective",
+    "mode": "meeting",
+    "source": "sample",
+    "transcript": "Welcome to the sprint twenty four retro. Let's go around with what went well and what didn't. The team felt the pairing sessions really helped onboard the two new engineers. On the not so good side, the staging environment was down for almost two days which blocked QA. We also underestimated the migration ticket by a lot. For action items, we want to add a health check alert for staging, and we'll start splitting large tickets during planning. Everyone agreed the daily standups have been running too long, so we'll timebox them to fifteen minutes.",
+    "summary": "### Overview\nSprint 24 retrospective covering wins, pain points, and process improvements.\n\n### Key Discussion Points\n* Pairing sessions accelerated onboarding of two new engineers (went well).\n* Staging downtime (~2 days) blocked QA; the migration ticket was badly underestimated.\n\n### Decisions Made\n* Timebox daily standups to 15 minutes.\n* Split large tickets during planning.\n\n### Action Items\n* Add a health-check alert for the staging environment.\n\n### Next Steps\n* Revisit estimation accuracy next retro.",
+    "wordCount": 95,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-probability",
+    "title": "Intro to Probability — Bayes' Theorem",
+    "mode": "lecture",
+    "source": "sample",
+    "transcript": "In today's lecture we cover conditional probability and Bayes theorem. Conditional probability is the probability of event A given that event B has occurred, written P of A given B. Bayes theorem lets us reverse the conditioning: P of A given B equals P of B given A times P of A divided by P of B. The classic example is medical testing. Even with a highly accurate test, if a disease is rare, the probability you actually have it given a positive result can be surprisingly low because of the base rate. This is called the base rate fallacy. For the assignment, work through the disease testing example with a one percent prevalence.",
+    "summary": "### Topic Overview\nA lecture on conditional probability and Bayes' theorem, including the base-rate fallacy.\n\n### Key Concepts\n* **Conditional probability** — P(A|B), the probability of A given B occurred.\n* **Bayes' theorem** — P(A|B) = P(B|A)·P(A) / P(B); reverses the conditioning.\n* **Base-rate fallacy** — for rare events, a positive test can still mean a low true probability.\n\n### Things to Review\n* The medical-testing example with low disease prevalence.\n\n### Study Questions\n* Why does a 99%-accurate test mislead when prevalence is 1%?",
+    "wordCount": 112,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-photosynthesis",
+    "title": "Biology 101 — Photosynthesis",
+    "mode": "lecture",
+    "source": "sample",
+    "transcript": "Alright class, today's topic is photosynthesis, the process by which plants convert light energy into chemical energy. It happens in the chloroplast, specifically using the pigment chlorophyll. There are two stages. The light dependent reactions occur in the thylakoid membrane and produce ATP and NADPH while splitting water and releasing oxygen. The light independent reactions, also called the Calvin cycle, occur in the stroma and use that ATP and NADPH to fix carbon dioxide into glucose. The overall equation is six carbon dioxide plus six water yields glucose plus six oxygen. Remember that chlorophyll absorbs red and blue light and reflects green, which is why leaves look green.",
+    "summary": "### Topic Overview\nA biology lecture on photosynthesis: how plants convert light into chemical energy in chloroplasts.\n\n### Key Concepts\n* **Light-dependent reactions** — in the thylakoid membrane; produce ATP and NADPH, split water, release oxygen.\n* **Calvin cycle (light-independent)** — in the stroma; fixes CO₂ into glucose using ATP/NADPH.\n* **Chlorophyll** — absorbs red and blue light, reflects green.\n\n### Things to Review\n* The overall equation: 6CO₂ + 6H₂O → glucose + 6O₂.\n\n### Study Questions\n* Where does each stage occur and what does it produce?",
+    "wordCount": 110,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-podcast-agi",
+    "title": "Deep Dive Podcast — The Future of AGI",
+    "mode": "podcast",
+    "source": "sample",
+    "transcript": "Welcome back to the show. Today my guest argues that scaling alone won't get us to artificial general intelligence. His view is that current large language models are incredible pattern matchers but lack a real world model and persistent memory. He pointed to the difference between interpolation and genuine reasoning. One memorable line was that these models are like a brilliant intern who has read everything but remembers nothing from yesterday. He recommended the book Thinking Fast and Slow and mentioned the work of Judea Pearl on causality. He thinks the next breakthrough will come from agents that can act in the world and learn from feedback rather than just bigger models.",
+    "summary": "### Episode Overview\nA conversation arguing that scaling large language models alone will not achieve AGI, emphasizing world models, memory, and causal reasoning.\n\n### Main Takeaways\n* Current LLMs are strong pattern matchers but lack a persistent world model and memory.\n* The distinction between interpolation and genuine reasoning is central.\n* The next breakthrough may come from agents that act and learn from feedback.\n\n### Notable Quotes or Moments\n* \"Like a brilliant intern who has read everything but remembers nothing from yesterday.\"\n\n### People, Tools & References\n* Book: *Thinking, Fast and Slow*.\n* Judea Pearl's work on causality.\n\n### Worth Exploring Further\n* Causal inference and agentic learning.",
+    "wordCount": 116,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-podcast-productivity",
+    "title": "Founder Hour — Productivity and Deep Work",
+    "mode": "podcast",
+    "source": "sample",
+    "transcript": "On today's episode we talk about deep work and protecting your attention. My guest runs a startup and swears by time blocking her entire calendar, including blocks for thinking. She said the biggest unlock was treating focus as a finite resource and batching all meetings into two afternoons. She referenced Cal Newport's book Deep Work and the idea of a shutdown ritual at the end of the day. We also discussed how she handles email, basically twice a day and never first thing in the morning. Her one piece of advice for listeners was to start each day by writing down the single most important task before opening any app.",
+    "summary": "### Episode Overview\nA discussion on deep work, attention management, and practical productivity systems used by a startup founder.\n\n### Main Takeaways\n* Time-block the whole calendar, including dedicated thinking time.\n* Batch meetings into two afternoons; treat focus as finite.\n* Check email twice a day, never first thing in the morning.\n\n### Notable Quotes or Moments\n* Advice: write down your single most important task before opening any app.\n\n### People, Tools & References\n* Cal Newport's book *Deep Work*; the \"shutdown ritual.\"\n\n### Worth Exploring Further\n* Time-blocking and meeting-batching workflows.",
+    "wordCount": 113,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-interview-backend",
+    "title": "Backend Engineer — Technical Screen",
+    "mode": "interview",
+    "source": "sample",
+    "transcript": "Thanks for joining the technical screen. To start, can you walk me through how you would design a rate limiter for an API. The candidate proposed a token bucket algorithm and explained the trade-offs versus a fixed window counter, noting that fixed windows allow bursts at the boundary. They discussed storing counters in Redis for a distributed setup and using a sliding window log for accuracy at higher cost. When asked about failure modes, they mentioned what happens if Redis goes down and suggested failing open versus failing closed depending on the endpoint's sensitivity. Communication was clear and they asked good clarifying questions about expected traffic.",
+    "summary": "### Overview\nA technical screen for a backend engineer focused on designing an API rate limiter.\n\n### Key Questions & Answers\n* Design a rate limiter — candidate proposed a token-bucket algorithm and compared it to a fixed-window counter (boundary bursts).\n* Distributed setup — store counters in Redis; sliding-window log for accuracy at higher cost.\n\n### Strengths / Highlights\n* Clear communication; strong on trade-offs; asked good clarifying questions about traffic.\n* Considered failure modes (Redis down; fail-open vs fail-closed).\n\n### Concerns / Follow-ups\n* Probe deeper on sliding-window implementation cost.\n\n### Overall Impression\nStrong systems-design fundamentals; recommend advancing.",
+    "wordCount": 106,
+    "durationMin": 2
+  },
+  {
+    "sessionId": "sample-interview-pm",
+    "title": "Product Manager — Candidate Screen",
+    "mode": "interview",
+    "source": "sample",
+    "transcript": "Welcome, this is a screen for the product manager role. I asked the candidate how they prioritize a roadmap when engineering capacity is fixed. They described using a weighted scoring model balancing customer impact, effort, and strategic fit, and mentioned RICE as a framework. They gave an example of cutting a pet feature after data showed low engagement, which showed good judgment. When asked about a time they disagreed with engineering, they described negotiating scope rather than pushing a deadline. One concern was that their answers stayed fairly high level and light on metrics. Overall a solid communicator with a customer first mindset.",
+    "summary": "### Overview\nA screen for a product manager role focused on prioritization and cross-functional collaboration.\n\n### Key Questions & Answers\n* Roadmap prioritization with fixed capacity — weighted scoring (impact, effort, strategic fit); referenced the RICE framework.\n* Disagreeing with engineering — negotiated scope rather than pushing the deadline.\n\n### Strengths / Highlights\n* Customer-first mindset; good judgment (cut a low-engagement feature based on data).\n\n### Concerns / Follow-ups\n* Answers stayed high-level and light on concrete metrics.\n\n### Overall Impression\nSolid communicator; follow up with a metrics-heavy case in the next round.",
+    "wordCount": 102,
+    "durationMin": 2
+  }
+]
