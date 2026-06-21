@@ -10,6 +10,31 @@ dense sentence embeddings, with extractive summarization and keyphrase extractio
 
 > 📓 **Start here:** [`notebooks/nlp_pipeline.ipynb`](notebooks/nlp_pipeline.ipynb) — the full
 > pipeline end-to-end, with rendered plots, an evaluation table, and a RAG walkthrough.
+> No bot to install in your meeting, no Google login, no screen-recording software. Just share a tab's audio and Earshot does the rest.
+
+![Earshot home screen](docs/home.png)
+
+---
+
+## Features
+
+- **Capture any tab's audio** — works with Google Meet, Zoom (web), YouTube, or anything that plays sound, via the browser's `getDisplayMedia` API.
+- **Live transcription** — audio is streamed in 15-second slices to [Groq Whisper](https://groq.com) and captions appear in near real time.
+- **Mode-aware summaries** — pick *Meeting*, *Lecture*, *Podcast*, or *Interview* and the summary structure adapts (decisions & action items vs. study notes vs. takeaways, etc.).
+- **Ask your history (RAG)** — every session is embedded with an **on-device** model and stored. Ask a question and Earshot retrieves the most relevant sessions and synthesizes a cited answer.
+- **Zero-config storage** — saves to MongoDB if configured, otherwise to a local JSON file. Nothing else to set up.
+
+---
+
+## Screenshots
+
+**Ask your history** — semantic search retrieves the most relevant sessions and answers with citations.
+
+![Ask AI view](docs/ask.png)
+
+**Library** — every captured session, tagged by type and saved for later.
+
+![Library view](docs/library.png)
 
 ---
 
